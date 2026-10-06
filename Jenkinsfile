@@ -35,9 +35,9 @@ spec:
 }
 
     environment {
-        IMAGE_NAME = 'YOUR_REGISTRY/platform-demo'
-        IMAGE_TAG = "${env.GIT_COMMIT}"
-    }
+    IMAGE_NAME = 'kind-registry:5000/platform-demo'
+    IMAGE_TAG = "${env.GIT_COMMIT}"
+}
 
     stages {
 
