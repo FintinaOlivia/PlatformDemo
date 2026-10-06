@@ -17,10 +17,24 @@ spec:
         - --addr
         - unix:///run/user/1000/buildkit/buildkitd.sock
 
+     - name: trivy
+      image: aquasec/trivy:latest
+      command:
+        - sh
+      args:
+        - -c
+        - |
+          tail -f /dev/null
+
     - name: jnlp
       image: jenkins/inbound-agent:latest
 '''
         }
+    }
+
+    environment {
+        IMAGE_NAME = 'YOUR_REGISTRY/platform-demo'
+        IMAGE_TAG = "${env.GIT_COMMIT}"
     }
 
     stages {
@@ -51,6 +65,43 @@ spec:
                 }
             }
         }
+
+        stage('Build and Push Image') {
+            steps {
+                container('builder') {
+                    sh '''
+                        set -e
+
+                        buildctl \
+                            --addr unix:///run/user/1000/buildkit/buildkitd.sock \
+                            build \
+                            --frontend dockerfile.v0 \
+                            --local context=. \
+                            --local dockerfile=. \
+                            --output type=image,name=${IMAGE_NAME}:${IMAGE_TAG},push=true
+                    '''
+                }
+            }
+        }
+
+        stage('Trivy Scan') {
+            steps {
+                container('trivy') {
+                    sh '''
+                        set -e
+
+                        echo "Scanning ${IMAGE_NAME}:${IMAGE_TAG}"
+
+                        trivy image \
+                            --severity HIGH,CRITICAL \
+                            --exit-code 1 \
+                            --no-progress \
+                            ${IMAGE_NAME}:${IMAGE_TAG}
+                    '''
+                }
+            }
+        }
+    
 
         stage('Test') {
             steps {
