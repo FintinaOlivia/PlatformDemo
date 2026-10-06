@@ -1,0 +1,3 @@
+[registry."kind-registry:5000"]
+  http = true
+  insecure = true
