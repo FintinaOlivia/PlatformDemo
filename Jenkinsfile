@@ -10,7 +10,7 @@ pipeline {
             spec:
             containers:
                 - name: builder
-                image: moby/buildkit:rootless
+                    image: moby/buildkit:rootless
                 command:
                     - sh
                 args:
