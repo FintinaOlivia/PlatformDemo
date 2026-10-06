@@ -16,6 +16,8 @@ spec:
         - buildkitd
         - --addr
         - unix:///run/user/1000/buildkit/buildkitd.sock
+      securityContext:
+        privileged: true
 
     - name: trivy
       image: aquasec/trivy:latest
