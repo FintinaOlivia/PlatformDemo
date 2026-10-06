@@ -17,14 +17,14 @@ spec:
         - --addr
         - unix:///run/user/1000/buildkit/buildkitd.sock
 
-     - name: trivy
+    - name: trivy
       image: aquasec/trivy:latest
       command:
         - sh
       args:
         - -c
         - |
-          tail -f /dev/null
+        tail -f /dev/null
 
     - name: jnlp
       image: jenkins/inbound-agent:latest
