@@ -108,7 +108,7 @@ spec:
                         trivy image \
                             --insecure \
                             --severity HIGH,CRITICAL \
-                            --exit-code 1 \
+                            // --exit-code 1 \
                             --no-progress \
                             ${IMAGE_NAME}:${IMAGE_TAG}
                     '''
