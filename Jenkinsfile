@@ -11,14 +11,10 @@ spec:
     - name: builder
       image: moby/buildkit:rootless
       command:
-        - sh
+        - buildkitd
       args:
-        - -c
-        - |
-          buildkitd \
-            --addr unix:///run/user/1000/buildkit/buildkitd.sock &
-          sleep 5
-          tail -f /dev/null
+        - --addr
+        - unix:///run/user/1000/buildkit/buildkitd.sock
 
     - name: jnlp
       image: jenkins/inbound-agent:latest
@@ -40,19 +36,11 @@ spec:
                     sh '''
                         set -e
 
-                        echo "=== Container ==="
-                        cat /etc/os-release || true
-
-                        echo "=== PATH ==="
-                        echo "$PATH"
-
-                        echo "=== buildctl location ==="
-                        command -v buildctl || true
-                        ls -l /usr/bin/buildctl 2>/dev/null || true
-                        ls -l /usr/local/bin/buildctl 2>/dev/null || true
-
-                        echo "=== buildctl version ==="
+                        echo "=== buildctl ==="
                         buildctl --version
+
+                        echo "=== BuildKit socket ==="
+                        ls -l /run/user/1000/buildkit/ || true
 
                         echo "=== BuildKit workers ==="
                         buildctl \
