@@ -1,9 +1,9 @@
 pipeline {
     agent {
-    kubernetes {
-        defaultContainer 'builder'
+        kubernetes {
+            defaultContainer 'builder'
 
-        yaml '''
+            yaml '''
 apiVersion: v1
 kind: Pod
 spec:
@@ -36,18 +36,19 @@ spec:
 
     - name: jnlp
       image: jenkins/inbound-agent:latest
-volumes:
-  - name: buildkit-config
-    configMap:
-      name: buildkit-config
+
+  volumes:
+    - name: buildkit-config
+      configMap:
+        name: buildkit-config
 '''
+        }
     }
-}
 
     environment {
-    IMAGE_NAME = 'kind-registry:5000/platform-demo'
-    IMAGE_TAG = "${env.GIT_COMMIT}"
-}
+        IMAGE_NAME = 'kind-registry:5000/platform-demo'
+        IMAGE_TAG = "${env.GIT_COMMIT}"
+    }
 
     stages {
 
@@ -113,7 +114,6 @@ volumes:
                 }
             }
         }
-    
 
         stage('Test') {
             steps {
