@@ -9,21 +9,21 @@ kind: Pod
 spec:
   containers:
     - name: builder
-        image: moby/buildkit:rootless
-        command:
-            - rootlesskit
-        args:
-            - buildkitd
-            - --addr
-            - unix:///run/user/1000/buildkit/buildkitd.sock
-            - --config
-            - /etc/buildkit/buildkitd.toml
-        securityContext:
-            privileged: true
-        volumeMounts:
-            - name: buildkit-config
-            mountPath: /etc/buildkit/buildkitd.toml
-            subPath: buildkitd.toml
+      image: moby/buildkit:rootless
+      command:
+        - rootlesskit
+      args:
+        - buildkitd
+        - --addr
+        - unix:///run/user/1000/buildkit/buildkitd.sock
+        - --config
+        - /etc/buildkit/buildkitd.toml
+      securityContext:
+        privileged: true
+      volumeMounts:
+        - name: buildkit-config
+          mountPath: /etc/buildkit/buildkitd.toml
+          subPath: buildkitd.toml
 
     - name: trivy
       image: aquasec/trivy:latest
