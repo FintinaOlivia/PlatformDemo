@@ -1,9 +1,9 @@
 pipeline {
     agent {
-        kubernetes {
-            defaultContainer 'builder'
+    kubernetes {
+        defaultContainer 'builder'
 
-            yaml '''
+        yaml '''
 apiVersion: v1
 kind: Pod
 spec:
@@ -24,13 +24,13 @@ spec:
       args:
         - -c
         - |
-        tail -f /dev/null
+          tail -f /dev/null
 
     - name: jnlp
       image: jenkins/inbound-agent:latest
 '''
-        }
     }
+}
 
     environment {
         IMAGE_NAME = 'YOUR_REGISTRY/platform-demo'
