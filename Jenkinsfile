@@ -91,6 +91,8 @@ spec:
                             --frontend dockerfile.v0 \
                             --local context=. \
                             --local dockerfile=. \
+                            --import-cache type=registry,ref=${IMAGE_NAME}:build-cache \
+                            --export-cache type=registry,ref=${IMAGE_NAME}:build-cache,mode=max \
                             --output type=image,name=${IMAGE_NAME}:${IMAGE_TAG},push=true
                     '''
                 }
