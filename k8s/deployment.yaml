@@ -21,8 +21,8 @@ spec:
 
         - name: platform-demo
 
-          # image: localhost:5001/platform-demo:latest
-          image: localhost:5001/platform-demo:test
+          # image: localhost:5000/platform-demo:latest
+          image: localhost:5000/platform-demo:test
 
           imagePullPolicy: IfNotPresent
 
