@@ -32,7 +32,7 @@ spec:
       args:
         - -c
         - |
-        tail -f /dev/null
+          tail -f /dev/null
 
     - name: test
       image: python:3.12-slim
@@ -41,7 +41,7 @@ spec:
       args:
         - -c
         - |
-        tail -f /dev/null
+          tail -f /dev/null
 
     - name: jnlp
       image: jenkins/inbound-agent:latest
