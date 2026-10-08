@@ -34,6 +34,15 @@ spec:
         - |
           tail -f /dev/null
 
+        - name: test
+            image: python:3.12-slim
+            command:
+                - sh
+            args:
+                - -c
+                - |
+                    tail -f /dev/null
+
     - name: jnlp
       image: jenkins/inbound-agent:latest
 
@@ -60,17 +69,11 @@ spec:
 
         stage('Test') {
             steps {
-                container('builder') {
+                container('test') {
                     sh '''
-                        echo "Running application tests..."
-
-                        if [ -f requirements.txt ]; then
-                            echo "requirements.txt found"
-                        fi
-
-                        if [ -d tests ]; then
-                            echo "Tests directory found"
-                        fi
+                        set -e
+                        python -m pip install --no-cache-dir -r requirements.txt
+                        python -m pytest app/tests
                     '''
                 }
             }
@@ -134,6 +137,7 @@ spec:
                 }
             }
         }
+
     }
 
     post {
