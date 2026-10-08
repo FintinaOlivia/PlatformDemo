@@ -34,15 +34,6 @@ spec:
         - |
           tail -f /dev/null
 
-    - name: test
-      image: python:3.12-slim
-      command:
-        - sh
-      args:
-        - -c
-        - |
-          tail -f /dev/null
-
     - name: jnlp
       image: jenkins/inbound-agent:latest
 
@@ -67,18 +58,6 @@ spec:
             }
         }
 
-        stage('Test') {
-            steps {
-                container('test') {
-                    sh '''
-                        set -e
-                        python -m pip install --no-cache-dir -r requirements.txt
-                        python -m pytest app/tests
-                    '''
-                }
-            }
-        }
-
         stage('BuildKit Diagnostics') {
             steps {
                 container('builder') {
@@ -95,6 +74,27 @@ spec:
                         buildctl \
                             --addr unix:///run/user/1000/buildkit/buildkitd.sock \
                             debug workers
+                    '''
+                }
+            }
+        }
+
+        stage('Test') {
+            steps {
+                container('builder') {
+                    sh '''
+                        set -e
+
+                        buildctl \
+                            --addr unix:///run/user/1000/buildkit/buildkitd.sock \
+                            build \
+                            --frontend dockerfile.v0 \
+                            --opt target=test \
+                            --local context=. \
+                            --local dockerfile=. \
+                            --import-cache type=registry,ref=${IMAGE_NAME}:build-cache \
+                            --export-cache type=registry,ref=${IMAGE_NAME}:build-cache,mode=max \
+                            --output type=cacheonly
                     '''
                 }
             }
