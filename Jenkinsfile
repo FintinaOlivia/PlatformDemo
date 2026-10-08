@@ -85,6 +85,8 @@ spec:
                     sh '''
                         set -e
 
+                        rm -rf /tmp/platform-demo-test
+
                         buildctl \
                             --addr unix:///run/user/1000/buildkit/buildkitd.sock \
                             build \
@@ -94,7 +96,7 @@ spec:
                             --local dockerfile=. \
                             --import-cache type=registry,ref=${IMAGE_NAME}:build-cache \
                             --export-cache type=registry,ref=${IMAGE_NAME}:build-cache,mode=max \
-                            --output type=cacheonly
+                            --output type=local,dest=/tmp/platform-demo-test
                     '''
                 }
             }
