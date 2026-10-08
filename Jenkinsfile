@@ -102,24 +102,6 @@ spec:
             }
         }
 
-        stage('Trivy Scan') {
-            steps {
-                container('trivy') {
-                    sh '''
-                        set -e
-
-                        echo "Scanning ${IMAGE_NAME}:${IMAGE_TAG}"
-
-                        trivy image \
-                            --insecure \
-                            --severity HIGH,CRITICAL \
-                            --no-progress \
-                            ${IMAGE_NAME}:${IMAGE_TAG}
-                    '''
-                }
-            }
-        }
-
         stage('Build and Push Image') {
             steps {
                 container('builder') {
@@ -139,6 +121,25 @@ spec:
                 }
             }
         }
+
+        stage('Trivy Scan') {
+            steps {
+                container('trivy') {
+                    sh '''
+                        set -e
+
+                        echo "Scanning ${IMAGE_NAME}:${IMAGE_TAG}"
+
+                        trivy image \
+                            --insecure \
+                            --severity HIGH,CRITICAL \
+                            --no-progress \
+                            ${IMAGE_NAME}:${IMAGE_TAG}
+                    '''
+                }
+            }
+        }
+
     }
 
     post {
