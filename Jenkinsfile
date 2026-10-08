@@ -26,22 +26,22 @@ spec:
           subPath: buildkitd.toml
 
     - name: trivy
-        image: aquasec/trivy:latest
-        command:
-            - sh
-        args:
-            - -c
-            - |
-                tail -f /dev/null
+      image: aquasec/trivy:latest
+      command:
+        - sh
+      args:
+        - -c
+        - |
+        tail -f /dev/null
 
     - name: test
-        image: python:3.12-slim
-        command:
-            - sh
-        args:
-            - -c
-            - |
-                tail -f /dev/null
+      image: python:3.12-slim
+      command:
+        - sh
+      args:
+        - -c
+        - |
+        tail -f /dev/null
 
     - name: jnlp
       image: jenkins/inbound-agent:latest
