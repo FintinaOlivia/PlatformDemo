@@ -25,14 +25,14 @@ spec:
           mountPath: /etc/buildkit/buildkitd.toml
           subPath: buildkitd.toml
 
-    - name: trivy
-      image: aquasec/trivy:latest
-      command:
-        - sh
-      args:
-        - -c
-        - |
-          tail -f /dev/null
+        - name: trivy
+            image: aquasec/trivy:latest
+            command:
+                - sh
+            args:
+                - -c
+                - |
+                    tail -f /dev/null
 
         - name: test
             image: python:3.12-slim
