@@ -58,6 +58,24 @@ spec:
             }
         }
 
+        stage('Test') {
+            steps {
+                container('builder') {
+                    sh '''
+                        echo "Running application tests..."
+
+                        if [ -f requirements.txt ]; then
+                            echo "requirements.txt found"
+                        fi
+
+                        if [ -d tests ]; then
+                            echo "Tests directory found"
+                        fi
+                    '''
+                }
+            }
+        }
+
         stage('BuildKit Diagnostics') {
             steps {
                 container('builder') {
@@ -112,24 +130,6 @@ spec:
                             --severity HIGH,CRITICAL \
                             --no-progress \
                             ${IMAGE_NAME}:${IMAGE_TAG}
-                    '''
-                }
-            }
-        }
-
-        stage('Test') {
-            steps {
-                container('builder') {
-                    sh '''
-                        echo "Running application tests..."
-
-                        if [ -f requirements.txt ]; then
-                            echo "requirements.txt found"
-                        fi
-
-                        if [ -d tests ]; then
-                            echo "Tests directory found"
-                        fi
                     '''
                 }
             }
